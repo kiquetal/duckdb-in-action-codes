@@ -19,3 +19,8 @@ western_europe.csv
 .mode csv
 
 .output western_europe.csv
+
+### COPY DIRECT FROM mouting directory
+
+duckdb > COPY (SELECT country, population,birthrate,deathrate from read_csv_auto('https://bit.ly/3KoiZR0') WHERE trim(region)='WESTERN EUROPE') TO '/data/western_europe.parquet' (FORMAT PARQUET)
+
