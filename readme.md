@@ -2,8 +2,11 @@
 
 ### Run duckdb for docker
 
-docker run -it --rm qldrsc/duckdb duckdb
+docker run -it --rm -v $(pwd):/data qldrsc/duckdb duckdb 
 
+### Copy from container docker
+
+docker cp CONTAINER:file ./myfile
 
 ### Run the example
 
