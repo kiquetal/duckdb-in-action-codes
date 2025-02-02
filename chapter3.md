@@ -25,3 +25,23 @@ value DECIMAL(5,2) NOT NULL,
 valid_from DATE NOT NULL,
 CONSTRAINT price_uk UNIQUE(valid_from)
 ```
+
+
+#### Create from select
+
+CREATE TABLE prices_duplicate AS
+SELECT * FROM prices;
+
+
+### Create view
+
+```sql
+CREATE OR REPLACE VIEW v_power_per_day AS
+SELECT system_id,
+       date_trunc('day', read_on)        AS day,
+       round(sum(power)  / 4 / 1000, 2)  AS kWh,
+FROM readings
+GROUP BY system_id, day;
+;
+
+```
