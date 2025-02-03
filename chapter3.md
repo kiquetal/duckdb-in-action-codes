@@ -95,3 +95,15 @@ SELECT SiteId, "Date-Time",
 #### Reading using date_trunc
 
 SELECT * FROM readings WHERE date_trunc('day',read_on) = '2019-08-26' and power <>0;
+
+### Using the conclict do
+
+```sql
+
+INSERT INTO readings(system_id, read_on, power)
+VALUES (10,'2023-06-05 13:00:00',3000)
+ON CONFLICT(system_id, read_on) DO UPDATE
+SET power = CASE
+ WHEN power = 0 then excluded.power
+ ELSE (power + excluded.power) / 2 END;
+```
