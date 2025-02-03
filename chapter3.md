@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS prices(
 id INTEGER primary key DEFAULT(nextval('price_id')),
 value DECIMAL(5,2) NOT NULL,
 valid_from DATE NOT NULL,
-CONSTRAINT price_uk UNIQUE(valid_from)
+CONSTRAINT price_uk UNIQUE(valid_from));
 ```
 
 
@@ -66,6 +66,10 @@ ON CONFLICT DO NOTHING;
 ### INSERT DATA FROM FILE
 INSERT INTO prices(value,valid_from,valid_until)
 SELECT * FROM 'prices.cvs' src;
+
+
+### REMEMBER TO use the volume directory
+INSERT INTO prices(value,valid_from,valid_until) SELECT * FROM '/data/prices.csv' src;
 
 
 
@@ -121,6 +125,12 @@ WHERE date_part('minute',read_on) NOT IN (0,15,30,45);
 ### SELECT statements
 
 ```sql
-
+SELECT date_part('year', valid_from) as year,
+min(value) as mininum_price,
+max(value) as maximum_price
+FROM prices
+WHERE year BETWEEN 2019 and 2020
+group by year
+order by year;
 
 ``` 
