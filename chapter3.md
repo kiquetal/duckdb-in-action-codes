@@ -62,5 +62,16 @@ INSERT INTO prices
 VALUES (1,11.59.'2018-12-01','2019-01-01')
 ON CONFLICT DO NOTHING;
 
+### INSERT DATA FROM FILE
 INSERT INTO prices(value,valid_from,valid_until)
 SELECT * FROM 'prices.cvs' src;
+
+
+
+### Describe from external location
+INSTALL 'httpfs'
+LOAD 'httpfs'
+
+DESCRIBE SELECT * FROM 'https://oedi-data-lake.s3.amazonaws.com/pvdaq/csv/systems.csv';
+
+
