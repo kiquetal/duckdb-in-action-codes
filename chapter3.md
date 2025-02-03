@@ -100,7 +100,7 @@ SELECT SiteId, "Date-Time",
 
 SELECT * FROM readings WHERE date_trunc('day',read_on) = '2019-08-26' and power <>0;
 
-### Using the conclict do
+#### Using the conclict do
 
 ```sql
 
@@ -113,7 +113,7 @@ SET power = CASE
 ```
 
 
-### USING delete
+#### USING delete
 
 ```sql
 DELETE FROM readings
@@ -122,7 +122,7 @@ WHERE date_part('minute',read_on) NOT IN (0,15,30,45);
 ```
 
 
-### SELECT statements
+#### SELECT statements
 
 ```sql
 SELECT date_part('year', valid_from) as year,
@@ -133,4 +133,25 @@ WHERE year BETWEEN 2019 and 2020
 group by year
 order by year;
 
-``` 
+```
+
+ 
+#### COPY values and create TABLE
+```sql
+CREATE TABLE my_table AS Select * from read_csv_auto('/path/file.csv')
+```
+
+#### JOIN
+
+```sql
+SELECT * FROM
+  ( VALUES(1,'a1'),
+          (2,'a2'),
+ 	  (3,'a3')) l (id, nameA)
+JOIN
+  (VALUES (1,'b1'),
+	  (2,'b2'),
+	  (4,'b4'))r (id,nameB)
+USING (id);
+
+```
