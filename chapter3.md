@@ -107,3 +107,20 @@ SET power = CASE
  WHEN power = 0 then excluded.power
  ELSE (power + excluded.power) / 2 END;
 ```
+
+
+### USING delete
+
+```sql
+DELETE FROM readings
+WHERE date_part('minute',read_on) NOT IN (0,15,30,45);
+
+```
+
+
+### SELECT statements
+
+```sql
+
+
+``` 
