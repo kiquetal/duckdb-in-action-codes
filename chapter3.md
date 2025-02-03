@@ -27,6 +27,14 @@ CONSTRAINT price_uk UNIQUE(valid_from)
 ```
 
 
+### Fix output
+
+.output stdout
+
+### See in table
+
+.mode table
+
 #### Create from select
 
 CREATE TABLE prices_duplicate AS
@@ -45,3 +53,14 @@ GROUP BY system_id, day;
 ;
 
 ```
+
+### Data manipulation language queries
+
+- INSERT
+
+INSERT INTO prices
+VALUES (1,11.59.'2018-12-01','2019-01-01')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO prices(value,valid_from,valid_until)
+SELECT * FROM 'prices.cvs' src;
