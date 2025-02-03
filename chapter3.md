@@ -9,9 +9,10 @@ CREATE TABLE IF NOT EXISTS systems(id INTEGER PRIMARY KEY, "name" VARCHAR NOT NU
 CREATE TABLE IF NOT EXISTS readings(
 system_id INTEGER NOT NULL,
 read_on TIMESTAMP NOT NULL,
-power DECIMAL(10,3) NOT NULL DEFAULT 0 CHECK(power>=0)
+power DECIMAL(10,3) NOT NULL DEFAULT 0 CHECK(power>=0),
 PRIMARY KEY(system_id, read_on),
-FOREIGN KEY(system_id) REFERENCES system(id);
+FOREIGN KEY(system_id) REFERENCES systems(id)
+);
 ```
 
 ```sql
@@ -75,3 +76,22 @@ LOAD 'httpfs'
 DESCRIBE SELECT * FROM 'https://oedi-data-lake.s3.amazonaws.com/pvdaq/csv/systems.csv';
 
 
+### Insert data from external sources
+
+
+INSERT INTO systems(id,name) SELECT DISTINCT system_id, system_public_name FROM 'https://oedi-data-lake.s3.amazonaws.com/pvdaq/csv/systems.csv' ORDER by system_id ASC;
+
+
+### INSERT DATA FROM CSV
+
+```sql
+INSERT INTO readings(system_id, read_on, power) 
+SELECT SiteId, "Date-Time",
+ CASE WHEN ac_power <0 OR ac_power IS NULL THEN 0 
+ ELSE ac_power END
+ FROM read_csv_auto('https://developer.nrel.gov/api/pvdaq/v3/data_file?api_key=DEMO_KEY&system_id=34&year=2019');
+```
+
+#### Reading using date_trunc
+
+SELECT * FROM readings WHERE date_trunc('day',read_on) = '2019-08-26' and power <>0;
