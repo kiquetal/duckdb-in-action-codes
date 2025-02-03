@@ -170,6 +170,28 @@ LEFT OUTER JOIN
 USING (id)
 ORDER BY id;
 ```
+#### Using join
+
+```sql
+select name, count(*) as number_of_readings from readings JOIN systems ON id = system_id 
+group by name;
+```
+
+#### CTE
+
+```sql
+ select max_power.v, read_on from (select max(power) as v from readings) max_power JOIN readings ON power=max_power.v;
+```
+
+Rewriting in CTE
+
+```sql
+WITH max_power AS (
+    select max(power) as v from readings )
+SELECT max_power.v, read_on 
+FROM max_power
+JOIN readings ON power= max_power.v;
+``` 
 
 
 
