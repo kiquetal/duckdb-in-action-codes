@@ -253,3 +253,22 @@ FROM prices
 WHERE COLUMNS(col -> col LIKE 'valid%')
 BETWEEN '2020-01-01' and '2021-01-01'
 
+
+#### Using alias
+
+```sql
+SELECT system_id < 10 as is_not_system10,
+date_trunc('month',read_on) as month,
+sum(power)/1000 / 1000 as power_per_month
+FROM readings
+where is_not_system10 = true
+group by is_not_system10,month
+having power_per_month > 100;
+```
+
+### Sample
+
+```sql
+select power from readings where power <>0 using sample 10%(bernoulli); 
+
+```
