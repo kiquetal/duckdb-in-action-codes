@@ -193,6 +193,63 @@ FROM max_power
 JOIN readings ON power= max_power.v;
 ``` 
 
+#### Using more complex example
 
+```sql
+WITH per_hour AS(
+   SELECT system_id, date_trunc('hour',read_on) as read_on,
+	avg(power)/1000 as kWh
+   FROM readings
+   GROUP BY ALL
+)
+Select name, max(kWh), arg_max(read_on,kWh) as 'Read on' 
+FROM per_hour
+    JOIN systems s on s.id= per_hour.system_id
+WHERE system_id=34
+group by s.name;
 
+```
+
+#### Using recursive
+
+```sql
+CREATE TABLE IF NOT EXISTS src(
+id INT PRIMARY KEY,
+parent_id INT,
+name varchar(8)
+);
+```
+
+```sql
+INSERT INTO src
+   (VALUES
+        (1,null,'root1'),
+        (2,1,'ch1a'),
+	(3,1,'ch2a'),
+        (4,3,'ch3a'),
+        (5,null,'root2'),
+        (6,5,'ch1b'));
+```
+
+```sql
+WITH RECURSIVE tree AS (
+   select id, id as root_id, [name] as path
+ FROM src where parent_id IS NULL
+UNION ALL
+   select src.id,root_id,list_append(tree.path,src.name) as path
+from src
+JOIN tree ON (src.parent_id=tree.id)
+)
+select path from tree;
+```
+
+#### EXCLUDE
+SELECT * EXCLUDE(ID)
+from prices
+
+SELECT COLUMNS('valid.*') from prices LIMIT 3;
+
+FROM prices
+WHERE COLUMNS(col -> col LIKE 'valid%')
+BETWEEN '2020-01-01' and '2021-01-01'
 
