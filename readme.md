@@ -23,6 +23,17 @@ western_europe.csv
 
 .output western_europe.csv
 
+### Creating table from csv
+
+CREATE TABLE my_talbe AS SELECT * from read_csv_auto('file.csv');
+
+
+### Showing values from csv
+
+SELECT * from read_csv_auto("file.csv")
+
+
+
 ### COPY DIRECT FROM mouting directory
 
 duckdb > COPY (SELECT country, population,birthrate,deathrate from read_csv_auto('https://bit.ly/3KoiZR0') WHERE trim(region)='WESTERN EUROPE') TO '/data/western_europe.parquet' (FORMAT PARQUET)
