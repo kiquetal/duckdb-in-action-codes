@@ -24,7 +24,7 @@ Another sql
 
 ```sql
 
-SELECT *, avg(kWh) OVER (PARTITION by system-id) as average_per_system
+SELECT *, avg(kWh) OVER (PARTITION by system_id) as average_per_system
 FROM v_power_per_day;
  ```
 
@@ -50,6 +50,23 @@ ORDER BY system_id, day;
 #### Named windows
 
 When you need three aggregates(min,max and quantiles) for caching outliers and computing the quantiles
+
+```sql
+SELECT system_id, day, min(kWh) OVER seven_days as '7-day-min',
+quantile(kWh, [0.25,0.5,0.75])
+ OVER seven_days AS "kwh 7-day-quartile",
+ max(kWh) OVER seven_days as "7-day-max"
+FROM v_power_per_day
+WINDOW 
+  seven_days AS (
+	partition by system_id, month(day)
+	ORDER by day ASC
+	RANGE BETWEEN interval 3 days preceding
+	and interval 3 days following
+  )
+ORDER BY system_id, day;
+
+```
 
 
 
