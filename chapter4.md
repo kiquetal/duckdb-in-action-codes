@@ -49,3 +49,8 @@ ORDER BY system_id, day;
 
 #### Named windows
 
+When you need three aggregates(min,max and quantiles) for caching outliers and computing the quantiles
+
+
+
+
