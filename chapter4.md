@@ -1,5 +1,14 @@
 #### Advanced aggreation and analysis of data
 
+### Attach and create sqlitedb
+
+ATTACH 'new_sqlite_database.db' AS sqlite_db (TYPE SQLITE);
+
+### Prerequisites
+
+INSTALL sqlite;
+LOAD sqlite;
+
 #### Window functions
 
 ```sql
@@ -37,3 +46,6 @@ AND INTERVAL 3 days following
 FROM v_power_per_day
 ORDER BY system_id, day;
 ```
+
+#### Named windows
+

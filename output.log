@@ -1,0 +1,6 @@
+-- Loading resources from /root/.duckdbrc
+v0.8.1 6536a77232
+Enter ".help" for usage hints.
+Connected to a [1mtransient in-memory database[0m.
+Use ".open FILENAME" to reopen on a persistent database.
+[6n

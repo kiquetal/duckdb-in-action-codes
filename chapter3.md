@@ -55,6 +55,20 @@ GROUP BY system_id, day;
 
 ```
 
+### CASTING for sqlitedb
+
+```sql
+SELECT system_id,
+    date_trunc('day', CAST(read_on AS TIMESTAMP)) as day,
+    round(sum(power::double) /4 / 1000,2) as kWh
+FROM sqlite_db.readings 
+GROUP BY system_id,date_trunc('day', CAST(read_on AS TIMESTAMP))
+ORDER BY system_id,day;
+
+```
+
+
+
 ### Data manipulation language queries
 
 - INSERT
