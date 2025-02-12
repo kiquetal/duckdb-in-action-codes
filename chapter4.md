@@ -80,6 +80,9 @@ ORDER BY valid_from;
 
 ```
 
+
+#### More casting
+
 ```sql
 
 WITH changes AS (
