@@ -66,7 +66,32 @@ WINDOW
   )
 ORDER BY system_id, day;
 
+
 ```
+
+```sql
+
+SELECT valid_from, value, lag(value) OVER validity as  "Previous value",
+      value::double - lag(value::double,1,value::double) OVER validity as CHANGE
+FROM sqlite_db.prices
+WHERE date_part('year',CAST(valid_from as TIMESTAMP)) = 2019
+WINDOW validity AS (ORDER BY valid_from)
+ORDER BY valid_from;
+
+```
+
+```sql
+
+WITH changes AS (
+SELECT value::double - lag(value::double,1,value::double) OVER (ORDER BY valid_from) AS v
+	FROM sqlite_db.prices
+	WHERE date_part('year',CAST(valid_from AS TIMESTAMP)) = 2019
+	ORDER BY valid_from
+)
+SELECT sum(changes.v) AS total_change
+FROM changes;
+```
+  
 
 
 

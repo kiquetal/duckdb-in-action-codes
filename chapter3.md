@@ -58,6 +58,8 @@ GROUP BY system_id, day;
 ### CASTING for sqlitedb
 
 ```sql
+
+CREATE OR REPLACE view v_power_per_day AS 
 SELECT system_id,
     date_trunc('day', CAST(read_on AS TIMESTAMP)) as day,
     round(sum(power::double) /4 / 1000,2) as kWh
